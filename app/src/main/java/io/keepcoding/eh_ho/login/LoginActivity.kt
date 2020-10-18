@@ -102,4 +102,5 @@ class LoginActivity : AppCompatActivity(),
             viewLoading.visibility = View.INVISIBLE
         }
     }
+
 }

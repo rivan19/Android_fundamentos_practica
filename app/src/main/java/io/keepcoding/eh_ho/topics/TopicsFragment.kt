@@ -71,14 +71,18 @@ class TopicsFragment : Fragment() {
     }
 
     private fun loadTopics() {
+        this.topicsInteractionListener?.enableLoading(true)
         context?.let {
             TopicsRepo
                 .getTopics(it.applicationContext,
                     {
+                        this.topicsInteractionListener?.enableLoading(false)
                         topicsAdapter.setTopics(it)
                     },
                     {
                        // TODO: Manejo de errores
+                        this.topicsInteractionListener?.enableLoading(false)
+                        this.topicsInteractionListener?.onError()
                     }
                 )
         }
@@ -98,6 +102,8 @@ class TopicsFragment : Fragment() {
     }
 
     interface TopicsInteractionListener {
+        fun enableLoading(enabled: Boolean)
+        fun onError()
         fun onCreateTopic()
         fun onLogout()
         fun onShowPosts(topic: Topic)

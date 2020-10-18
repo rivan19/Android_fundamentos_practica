@@ -46,9 +46,23 @@ class SignInFragment: Fragment() {
                 inputPassword.text.toString()
             )
 
-            signInInteractionListener?.onSignIn(signInModel)
+            if (isFormValid())
+                signInInteractionListener?.onSignIn(signInModel)
+            else
+                showErrors()
         }
     }
+
+    private fun showErrors(){
+
+        if (inputUsername.text.isEmpty())
+            inputUsername.error = "This field cannot be empty"
+        if (inputPassword.text.isEmpty())
+            inputPassword.error = "This field cannot be empty"
+
+    }
+
+    private fun isFormValid() = inputUsername.text.isNotEmpty() && inputPassword.text.isNotEmpty()
 
     override fun onDetach() {
         super.onDetach()

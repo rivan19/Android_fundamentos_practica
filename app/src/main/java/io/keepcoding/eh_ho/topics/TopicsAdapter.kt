@@ -41,8 +41,8 @@ class TopicsAdapter(val topicClickListener: ((Topic) -> Unit)? = null) :
 
     fun setTopics(topics: List<Topic>) {
         this.topics.clear()
-        this.topics.addAll(topics)
         notifyDataSetChanged()
+        this.topics.addAll(topics)
     }
 
     inner class TopicHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
