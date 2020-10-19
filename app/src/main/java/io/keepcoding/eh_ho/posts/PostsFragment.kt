@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.PostRepo
 import io.keepcoding.eh_ho.data.Topic
@@ -71,6 +72,17 @@ class PostsFragment : Fragment() {
             loadPosts()
             swipePostRefresh.isRefreshing = false
         }
+
+        listPosts.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0 && buttonCreate.visibility === View.VISIBLE) {
+                    buttonCreate.hide()
+                } else if (dy < 0 && buttonCreate.visibility !== View.VISIBLE){
+                    buttonCreate.show()
+                }
+            }
+        })
 
         listPosts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         listPosts.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
