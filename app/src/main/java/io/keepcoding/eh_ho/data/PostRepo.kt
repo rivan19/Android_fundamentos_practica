@@ -4,7 +4,9 @@ import android.content.Context
 import com.android.volley.NetworkError
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.Request
+import com.android.volley.ServerError
 import io.keepcoding.eh_ho.R
+import org.json.JSONObject
 
 object PostRepo {
     val posts: MutableList<Post> = mutableListOf()
@@ -32,6 +34,50 @@ object PostRepo {
                         RequestError(it)
                 onError(requestError)
             }
+        )
+
+        ApiRequestQueue
+            .getRequestQueue(context)
+            .add(request)
+    }
+
+    fun addPost(
+        context: Context,
+        model: CreatePostModel,
+        onSuccess: (CreatePostModel) -> Unit,
+        onError: (RequestError) -> Unit
+    ){
+        val username = UserRepo.getUsername(context)
+        val request = PostRequest(
+            Request.Method.POST,
+            ApiRoutes.createTopic(),
+            model.toJson(),
+            {
+                onSuccess(model)
+            },
+            {
+                it.printStackTrace()
+                val requestError =
+                    if (it is ServerError && it.networkResponse.statusCode == 422) {
+                        val body = String(it.networkResponse.data, Charsets.UTF_8)
+                        val jsonError = JSONObject(body)
+                        val errors = jsonError.getJSONArray("errors")
+                        var errorMessage = ""
+
+                        for (i in 0 until errors.length()) {
+                            errorMessage += "${errors[i]} "
+                        }
+
+                        RequestError(it, message = errorMessage)
+
+                    } else if (it is NetworkError)
+                        RequestError(it, messageResId = R.string.error_no_internet)
+                    else
+                        RequestError(it)
+
+                onError(requestError)
+            },
+            username
         )
 
         ApiRequestQueue

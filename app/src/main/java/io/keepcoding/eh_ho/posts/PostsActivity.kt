@@ -13,8 +13,10 @@ const val EXTRA_TOPIC_ID = "TOPIC_ID"
 const val TRANSACTION_LOAD_POSTS = "load_posts"
 const val ARG_ID = "id"
 
+
 class PostsActivity : AppCompatActivity(),
-PostsFragment.PostsInteractionListener{
+PostsFragment.PostsInteractionListener,
+CreatePostFragment.CreatePostInteractionListener{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +51,25 @@ PostsFragment.PostsInteractionListener{
 
     }
 
-    override fun onCreateTopic() {
+    override fun onPostCreated(idTopic: String) {
+        /*val postFragment = PostsFragment()
 
+        postFragment.arguments?.putString(ARG_ID, idTopic)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, PostsFragment.newInstance(idTopic))
+            .commit()*/
+
+        supportFragmentManager.popBackStack()
+    }
+
+    override fun onCreateTopic(idTopic: String) {
+        val createPostFragment = CreatePostFragment()
+        createPostFragment.arguments?.putString(ARG_ID_TOPIC, idTopic)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, CreatePostFragment.newInstance(idTopic))
+            .addToBackStack(TRANSACTION_LOAD_POSTS)
+            .commit()
     }
 }

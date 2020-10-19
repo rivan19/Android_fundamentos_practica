@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.Topic
+import io.keepcoding.eh_ho.data.TopicsRepo
 import io.keepcoding.eh_ho.inflate
 import kotlinx.android.synthetic.main.item_topic.view.*
 import java.lang.IllegalArgumentException
@@ -13,7 +14,7 @@ import java.util.*
 class TopicsAdapter(val topicClickListener: ((Topic) -> Unit)? = null) :
     RecyclerView.Adapter<TopicsAdapter.TopicHolder>() {
 
-    private val topics = mutableListOf<Topic>()
+    //private val topics = mutableListOf<Topic>()
 
     private val listener: ((View) -> Unit) = {
         if (it.tag is Topic) {
@@ -25,7 +26,7 @@ class TopicsAdapter(val topicClickListener: ((Topic) -> Unit)? = null) :
     }
 
     override fun getItemCount(): Int {
-        return topics.size
+        return TopicsRepo.topics.size
     }
 
     override fun onCreateViewHolder(list: ViewGroup, viewType: Int): TopicHolder {
@@ -34,15 +35,15 @@ class TopicsAdapter(val topicClickListener: ((Topic) -> Unit)? = null) :
     }
 
     override fun onBindViewHolder(holder: TopicHolder, position: Int) {
-        val topic = topics[position]
+        val topic = TopicsRepo.topics[position]
         holder.topic = topic
         holder.itemView.setOnClickListener(listener)
     }
 
     fun setTopics(topics: List<Topic>) {
-        this.topics.clear()
+        TopicsRepo.topics.clear()
         notifyDataSetChanged()
-        this.topics.addAll(topics)
+        TopicsRepo.topics.addAll(topics)
     }
 
     inner class TopicHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

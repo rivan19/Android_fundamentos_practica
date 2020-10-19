@@ -53,6 +53,7 @@
     <string name="label_creating_topic">Creating Topic</string>
     <string name="label_something_bad_happened">Oops something bad happened</string>
     <string name="button_retry">RETRY</string>
+    <string name="create_post_content">Content</string>
 
 
 </resources>

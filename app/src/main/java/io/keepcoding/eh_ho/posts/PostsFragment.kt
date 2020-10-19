@@ -13,11 +13,14 @@ import io.keepcoding.eh_ho.inflate
 import io.keepcoding.eh_ho.topics.TopicsFragment
 import kotlinx.android.synthetic.main.fragment_post.*
 
+const val ARG_ID_TOPIC = "idTopic"
+
 class PostsFragment : Fragment() {
 
     var postsInteractionListener: PostsFragment.PostsInteractionListener? = null
 
     private var idTopic: String = ""
+
     private val postAdapter: PostsAdapter by lazy {
         val adapter = PostsAdapter()
         adapter
@@ -42,12 +45,6 @@ class PostsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_create_post, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onCreateView(
@@ -63,6 +60,10 @@ class PostsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         postAdapter.setPosts(PostRepo.posts)
+
+        buttonCreate.setOnClickListener{
+            postsInteractionListener?.onCreateTopic(idTopic)
+        }
 
         listPosts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         listPosts.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -107,6 +108,6 @@ class PostsFragment : Fragment() {
     interface PostsInteractionListener {
         fun enableLoading(enabled: Boolean)
         fun onError()
-        fun onCreateTopic()
+        fun onCreateTopic(idTopic: String)
     }
 }
