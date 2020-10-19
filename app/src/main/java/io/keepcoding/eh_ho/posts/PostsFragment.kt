@@ -12,6 +12,8 @@ import io.keepcoding.eh_ho.data.Topic
 import io.keepcoding.eh_ho.inflate
 import io.keepcoding.eh_ho.topics.TopicsFragment
 import kotlinx.android.synthetic.main.fragment_post.*
+import kotlinx.android.synthetic.main.fragment_post.buttonCreate
+import kotlinx.android.synthetic.main.fragment_topics.*
 
 const val ARG_ID_TOPIC = "idTopic"
 
@@ -63,6 +65,11 @@ class PostsFragment : Fragment() {
 
         buttonCreate.setOnClickListener{
             postsInteractionListener?.onCreateTopic(idTopic)
+        }
+
+        swipePostRefresh.setOnRefreshListener {
+            loadPosts()
+            swipePostRefresh.isRefreshing = false
         }
 
         listPosts.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

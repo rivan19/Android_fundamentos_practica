@@ -6,6 +6,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import io.keepcoding.eh_ho.R
 import io.keepcoding.eh_ho.data.Topic
 import io.keepcoding.eh_ho.data.TopicsRepo
@@ -16,6 +17,7 @@ class TopicsFragment : Fragment() {
 
     var topicsInteractionListener: TopicsInteractionListener? = null
 
+    private val swipeRefresh: SwipeRefreshLayout? = null
     private val topicsAdapter: TopicsAdapter by lazy {
         val adapter = TopicsAdapter {
             this.topicsInteractionListener?.onShowPosts(it)
@@ -52,6 +54,11 @@ class TopicsFragment : Fragment() {
             this.topicsInteractionListener?.onCreateTopic()
         }
 
+        swipeTopicRefresh.setOnRefreshListener {
+            loadTopics()
+            swipeTopicRefresh.isRefreshing = false
+        }
+
         topicsAdapter.setTopics(TopicsRepo.topics)
 
         listTopics.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -86,6 +93,8 @@ class TopicsFragment : Fragment() {
                     }
                 )
         }
+
+        swipeTopicRefresh.isRefreshing = false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
