@@ -30,6 +30,14 @@ object ApiRoutes {
             .build()
             .toString()
 
+    fun getPosts(id: String) =
+        uriBuilder()
+            .appendPath("t")
+            .appendPath("$id")
+            .appendPath("posts.json")
+            .build()
+            .toString()
+
     private fun uriBuilder() =
         Uri.Builder()
             .scheme("https")

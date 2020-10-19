@@ -94,3 +94,4 @@ data class Topic(
         return TimeOffset(0, Calendar.MINUTE)
     }
 }
+
